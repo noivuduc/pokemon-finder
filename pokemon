@@ -1,0 +1,132 @@
+#!/usr/bin/env node
+
+const chalk = require('chalk')
+const rl = require('readline')
+const args = process.argv
+const config = require('./config')
+// Init in memory stores
+const InMemoryData = require('./data')
+const data = new InMemoryData(config)
+// Init file caching
+const Cache = require('./cache')
+const fileCache = new Cache(config)
+const Server = require('./server/server')
+const server = new Server(data, fileCache)
+
+const welcome = function() {
+    const welcome = 
+    `
+    ===================================================================
+    |                                                                   |
+    |                        POKEMON FINDER                             |
+    |                                                                   |
+    |                                                                   |
+    |                                                                   |
+     ===================================================================
+    `
+    console.log(chalk.green(welcome))
+}
+
+// usage represents the help guide
+const menu = function () {
+    displayMessage('------------------------------------------')
+    const usageText = `
+    [ MENU ]:
+    1. Find a pokemon
+    2. Clear cache
+    3. Exit
+  `
+    console.log(chalk.green(usageText))
+    displayMessage('------------------------------------------')
+    prompt(chalk.green("Select an action:")).then((ans) => {
+        executeCommand(ans)
+    })
+}
+
+// used to log errors to the console in red color
+function errorLog(error) {
+    const eLog = chalk.red(error)
+    console.log(eLog)
+}
+
+function displayMessage(result) {
+    const resultLog = chalk.blue(result)
+    console.log(resultLog)
+}
+
+
+if (args.length > 1) {
+    errorLog('No arguments accepted')
+    menu()
+    return
+}
+
+// Load data from cache to store in memory
+// Remove the data which is too old
+function init() {
+    // TODO: Load data from text file
+    welcome()
+    displayMessage('Loading data....')
+    fileCache.sync(data)
+    displayMessage('Data loaded into memory')
+    menu()
+}
+
+
+function findPokemon() {
+    prompt(chalk.blue("Enter pokemon name or ID to find: ")).then(async (query) => {
+        const pokemon = await server.findPokemon(query)
+        if (!pokemon) {
+            errorLog(`Pokemon has name or Id is ${query} not found`)
+        } else {
+            const message =
+        `[ Found ]:
+        - ID       : ${pokemon.getId()}
+        - Name     : ${pokemon.getName()}
+        - Types    : ${pokemon.getTypes()}
+        - Stats    : ${pokemon.getStats()}
+        - Encounter: ${pokemon.getEncounters()}
+        `
+            displayMessage(message)
+        }
+        menu()
+    })
+}
+
+function prompt(question) {
+    const r = rl.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+        terminal: false
+    });
+    return new Promise((resolve, error) => {
+        r.question(question, answer => {
+            r.close()
+            if (!isNaN(answer)) { // Check the input is number
+                answer = Number.parseInt(answer)
+            }
+            resolve(answer)
+        });
+    })
+}
+
+function executeCommand(value) {
+    switch(value) {
+        case 1:
+            findPokemon()
+            break;
+        case 2:
+            fileCache.clear()
+            displayMessage('Cached is cleared')
+            menu()
+            break;
+        case 3:
+            displayMessage('System is shutting down....')
+            return;    
+        default:
+            displayMessage('No actions matched')
+            menu()        
+    }
+}
+
+init()
