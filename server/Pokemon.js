@@ -29,7 +29,7 @@ class Pokemon {
     getTypes() {
         let output = ''
         for (const type of this.types) {
-            output += type.name + ','
+            output += type.name + ', '
         }
         return output;
     }

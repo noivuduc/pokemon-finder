@@ -5,11 +5,12 @@ const Pokemon = require('./Pokemon')
 const Stat = require('./Stat')
 const Type = require('./Type')
 const Encounter = require('./Encounter')
-const API_URI = 'https://pokeapi.co/api/v2/pokemon/'
+
 class Server {
-    constructor(stores, cache) {
+    constructor(stores, cache, config) {
         this.stores = stores;
         this.cache = cache
+        this.config = config
     }
     async findPokemon(query) {
         let pokemon = this.stores.find(query)
@@ -29,6 +30,7 @@ class Server {
 
     async fromAPI(query) {
         try {
+            const API_URI = this.config.API_URI
             const resp = await axios({
                 method: 'get',
                 url: API_URI + query,

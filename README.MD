@@ -4,19 +4,24 @@
 - Terminal application
 
 ## Environments Requirements
-- Node.js version 12
+- Node.js version >= 10
 
 ## How to run
-- cd to the application folder
-- Install the packages
+### cd to the application folder
+### Install the packages
 ```bash
    npm install
 ```
-- Give the application permission to execute (on Mac OS)
+### Give the application permission to execute (on Mac OS)
 ```bash
     chmod +x ./pokemon 
 ```
-- Run the application
+### Run the application
+- Mac OS
 ```bash
     ./pokemon
+```
+ - Window OS
+```bash
+    node pokemon
 ```

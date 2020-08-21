@@ -11,14 +11,14 @@ const data = new InMemoryData(config)
 const Cache = require('./cache')
 const fileCache = new Cache(config)
 const Server = require('./server/server')
-const server = new Server(data, fileCache)
+const server = new Server(data, fileCache, config)
 
 const welcome = function() {
     const welcome = 
     `
     ===================================================================
     |                                                                   |
-    |                      WELCOME TO POKEMON FINDER                    |
+    |              WELCOME TO POKEMON FINDER(Version 1.0.0)             |
     |            Follow the menu below to perform your actions          |
     |                                                                   |
     |                                                                   |
@@ -83,7 +83,7 @@ function findPokemon() {
             errorLog(`Pokemon has name or Id is ${query} not found`)
         } else {
             const message =
-        `[ Found ]:
+        `[ Found One Pokemon ]:
         - Pokemon ID       : ${pokemon.getId()}
         - Pokemon Name     : ${pokemon.getName()}
         - Pokemon Types    : ${pokemon.getTypes()}
