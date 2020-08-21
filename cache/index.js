@@ -43,7 +43,7 @@ class FileSystemCache {
                 }
 
                 for (const encounter of encounters) {
-                    const methods = encounter.methods
+                    const methods = encounter.methods || []
                     const enc = new Encounter(encounter.area, encounter.version)
                     for (const method of methods) {
                         enc.addMethod(method)
@@ -55,6 +55,7 @@ class FileSystemCache {
             // Save new file with the valid ttl
             fs.writeFileSync(filePath, newFile)
         } catch (error) {
+            console.log(error)
             return;
         }
     }

@@ -121,6 +121,7 @@ function executeCommand(value) {
             break;
         case 2:
             fileCache.clear()
+            data.clear()
             displayMessage('Cached is cleared')
             menu()
             break;

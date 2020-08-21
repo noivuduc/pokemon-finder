@@ -2,15 +2,15 @@ class Encounter {
     constructor(area, version) {
         this.area = area
         this.version = version
-        this.methods = new Set()
+        this.methods = []
     }
 
     addMethod(method) {
-        this.methods.add(method)
+        this.methods.push(method)
     }
 
     show() {
-        const methods = [...this.methods]
+        const methods = [...new Set(this.methods)]
         const out = 
             `
             Area   : ${this.area}

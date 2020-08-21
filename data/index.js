@@ -23,6 +23,10 @@ class InMemoryData {
         }
         return pokemon;
     }
+
+    clear() {
+        this.pokemons = new Map()
+    }
 }
 
 module.exports = InMemoryData
