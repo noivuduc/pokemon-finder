@@ -7,11 +7,16 @@
 - Node.js version 12
 
 ## How to run
-### on MAC OS
 - cd to the application folder
-- run command
+- Install the packages
 ```bash
    npm install
-   chmod +x pokemon 
-   ./pokemon
+```
+- Give the application permission to execute (on Mac OS)
+```bash
+    chmod +x ./pokemon 
+```
+- Run the application
+```bash
+    ./pokemon
 ```

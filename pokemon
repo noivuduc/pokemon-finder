@@ -29,10 +29,12 @@ const welcome = function() {
 
 // usage represents the help guide
 const menu = function () {
+    const cacheStats = fileCache.getStats()
+    const cacheSize = cacheStats ? cacheStats.size : 0 
     const usageText = `
     [ MENU ]:
     1. Find a pokemon
-    2. Clear cache
+    2. Clear cache (${cacheSize}kb)
     3. Exit
   `
     console.log(chalk.green(usageText))
@@ -82,11 +84,11 @@ function findPokemon() {
         } else {
             const message =
         `[ Found ]:
-        - ID       : ${pokemon.getId()}
-        - Name     : ${pokemon.getName()}
-        - Types    : ${pokemon.getTypes()}
-        - Stats    : ${pokemon.getStats()}
-        - Encounter: ${pokemon.getEncounters()}
+        - Pokemon ID       : ${pokemon.getId()}
+        - Pokemon Name     : ${pokemon.getName()}
+        - Pokemon Types    : ${pokemon.getTypes()}
+        - Pokemon Stats    : ${pokemon.getStats()}
+        - Pokemon Encounter: ${pokemon.getEncounters()}
         `
             displayMessage(message)
         }
@@ -94,7 +96,7 @@ function findPokemon() {
     })
 }
 /**
- * Show questions to the terminal and wait for input from user
+ * Show questions to the terminal and wait for the input from user
  * @param question Question to ask
  */
 function prompt(question) {

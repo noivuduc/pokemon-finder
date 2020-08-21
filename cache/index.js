@@ -16,11 +16,15 @@ class FileSystemCache {
     sync(memoryStores) {
         try {
             // Check if the cache is existed
-            fs.statSync(filePath)
+            const stats = this.getStats()
+            if (!stats) {
+                return;
+            }
+            console.log('Cache size: ', stats.size + 'kb')
             const liner = new ReadLine(filePath)
             let newFile = ''
             let line;
-            while(line = liner.next()) {
+            while (line = liner.next()) {
                 const poke = JSON.parse(line.toString('utf8'))
                 // TODO: Check the created date
                 const createdDate = new Date(poke.createdAt);
@@ -57,6 +61,15 @@ class FileSystemCache {
         } catch (error) {
             console.log(error)
             return;
+        }
+    }
+
+    getStats() {
+        try {
+            const stats = fs.statSync(filePath)
+            return stats;
+        } catch (error) {
+            return false
         }
     }
 
