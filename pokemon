@@ -18,8 +18,8 @@ const welcome = function() {
     `
     ===================================================================
     |                                                                   |
-    |                        POKEMON FINDER                             |
-    |                                                                   |
+    |                      WELCOME TO POKEMON FINDER                    |
+    |            Follow the menu below to perform your actions          |
     |                                                                   |
     |                                                                   |
      ===================================================================
@@ -29,7 +29,6 @@ const welcome = function() {
 
 // usage represents the help guide
 const menu = function () {
-    displayMessage('------------------------------------------')
     const usageText = `
     [ MENU ]:
     1. Find a pokemon
@@ -37,7 +36,6 @@ const menu = function () {
     3. Exit
   `
     console.log(chalk.green(usageText))
-    displayMessage('------------------------------------------')
     prompt(chalk.green("Select an action:")).then((ans) => {
         executeCommand(ans)
     })
@@ -55,26 +53,29 @@ function displayMessage(result) {
 }
 
 
-if (args.length > 1) {
-    errorLog('No arguments accepted')
+if (args.length > 2) {
+    errorLog('This application does not take any arguments')
     menu()
     return
 }
 
-// Load data from cache to store in memory
-// Remove the data which is too old
+/**
+ * Init the application
+ */
 function init() {
-    // TODO: Load data from text file
-    welcome()
     displayMessage('Loading data....')
+    // Load data from cache to store in memory
     fileCache.sync(data)
     displayMessage('Data loaded into memory')
+    welcome()
     menu()
 }
 
-
+/**
+ * Perform finding pokemon function
+ */
 function findPokemon() {
-    prompt(chalk.blue("Enter pokemon name or ID to find: ")).then(async (query) => {
+    prompt(chalk.blue("Enter pokemon's name or ID to find: ")).then(async (query) => {
         const pokemon = await server.findPokemon(query)
         if (!pokemon) {
             errorLog(`Pokemon has name or Id is ${query} not found`)
@@ -92,7 +93,10 @@ function findPokemon() {
         menu()
     })
 }
-
+/**
+ * Show questions to the terminal and wait for input from user
+ * @param question Question to ask
+ */
 function prompt(question) {
     const r = rl.createInterface({
         input: process.stdin,

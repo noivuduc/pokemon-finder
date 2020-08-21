@@ -11,6 +11,7 @@
 - cd to the application folder
 - run command
 ```bash
+   npm install
    chmod +x pokemon 
    ./pokemon
 ```
